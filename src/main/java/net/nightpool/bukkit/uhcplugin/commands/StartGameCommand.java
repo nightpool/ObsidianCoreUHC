@@ -22,7 +22,7 @@ public class StartGameCommand extends UHCCommandHandler {
 				World world = (sender instanceof Player) ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0);
 				UHCTemplate t = p.getTemplates().get("default");
 				if(t == null){
-					sender.sendMessage(ChatColor.RED+"No game loaded and no default template to load.");
+					sender.sendMessage(ChatColor.RED+"No game loaded and no default template to load.");return;
 				}
 				sender.sendMessage(ChatColor.YELLOW+"No game loaded. Loading one with \"default\" template on world \""+world.getName()+"\".");
 				p.loadGame(t, sender, world);
