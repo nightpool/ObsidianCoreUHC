@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import net.nightpool.bukkit.nightutils.GeneralConfig;
@@ -108,20 +107,20 @@ public class UHCTemplate extends GeneralConfig{
 			Double d;
 			Integer i;
 			if (db instanceof Double){
-//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Double: "+((Double)db).toString());
+//				Bukkit.getLogger().info(UHCPlugin.logPrefix+"Double: "+((Double)db).toString());
 				d = (Double)db;
 			} else if (db instanceof Integer){
-//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Integer: "+((Integer)db).toString());
+//				Bukkit.getLogger().info(UHCPlugin.logPrefix+"Integer: "+((Integer)db).toString());
 				d = ((Integer) db).doubleValue();
 			} else{
-//				Bukkit.getLogger().warning(UHCPlugin.log_prefix+"Error parsing key in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
+//				Bukkit.getLogger().warning(UHCPlugin.logPrefix+"Error parsing key in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
 				continue;
 			}
 			if (ib instanceof Integer){
-//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Integer: "+((Integer)ib).toString());
+//				Bukkit.getLogger().info(UHCPlugin.logPrefix+"Integer: "+((Integer)ib).toString());
 				i = ((Integer) ib);
 			}else{
-//				Bukkit.getLogger().warning(UHCPlugin.log_prefix+"Error parsing value in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
+//				Bukkit.getLogger().warning(UHCPlugin.logPrefix+"Error parsing value in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
 				continue;
 			}
 			map.put(d, i);

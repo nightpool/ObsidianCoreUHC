@@ -30,10 +30,10 @@ public class UHCPlugin extends CommandPlugin{
 		private static final long serialVersionUID = 1L;
 	}
 
-	public static final boolean debug = true;
-	public static final String log_prefix = "["+"ObsidianCoreUHC"+"] ";
-	public static final String fancyName = "§5§lO§r§5bsidian§lC§r§5oreUHC";
-	public static final String chat_prefix = ChatColor.DARK_PURPLE+log_prefix+ChatColor.LIGHT_PURPLE;
+	public static boolean debug = true;
+	public static final String logPrefix = "["+"ObsidianCoreUHC"+"] ";
+	public static final String fancyName = "§5§lO§r§5bsidian§lC§r§5oreUHC"+ChatColor.LIGHT_PURPLE;
+	public static final String chatPrefix = ChatColor.DARK_PURPLE+logPrefix+ChatColor.LIGHT_PURPLE;
 	public Logger log;	
 	private UHCGame game;
 	
@@ -68,6 +68,7 @@ public class UHCPlugin extends CommandPlugin{
 		File folder = this.getDataFolder();
         if(!folder.exists()){folder.mkdir();}
 		config = new UHCMainConfig(this, new File(folder, "config.yml"));
+		debug = config.debug;
 		load_rulesets(); // needs to be after main config, but before templates 
 		File template_folder = new File(folder, "templates/");
 		if(!template_folder.exists()){
@@ -175,15 +176,15 @@ public class UHCPlugin extends CommandPlugin{
 
 	public void broadcast(String message, Set<CommandSender> players) {
 		for(CommandSender i : players){
-			i.sendMessage(chat_prefix + message);
+			i.sendMessage(chatPrefix + message);
 		}
 	}
 	public void broadcast(String message, String permission){
-		Bukkit.broadcast(chat_prefix + message, permission);
+		Bukkit.broadcast(chatPrefix + message, permission);
 	}
 	
 	public void broadcast(String message){
-		Bukkit.broadcastMessage(chat_prefix + message);
+		Bukkit.broadcastMessage(chatPrefix + message);
 	}
 
 	public void loadGame(UHCTemplate t, CommandSender sender, World world) {

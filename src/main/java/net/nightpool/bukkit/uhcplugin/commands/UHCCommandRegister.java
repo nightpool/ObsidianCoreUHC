@@ -2,7 +2,6 @@ package net.nightpool.bukkit.uhcplugin.commands;
 
 import net.nightpool.bukkit.nightutils.CommandRegister;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
-import net.nightpool.bukkit.uhcplugin.commands.*;
 
 public class UHCCommandRegister extends CommandRegister {
 	UHCPlugin p;
@@ -19,6 +18,8 @@ public class UHCCommandRegister extends CommandRegister {
 		this.register(RemovePlayerCommand.class);
 		this.register(AddPlayerCommand.class);
 		
-		this.register(ForceBorderChangeCommand.class);
+		if(UHCPlugin.debug){
+			this.register(ForceBorderChangeCommand.class);
+		}
 	}
 }

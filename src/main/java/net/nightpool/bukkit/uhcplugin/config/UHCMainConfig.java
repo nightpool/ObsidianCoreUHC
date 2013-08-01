@@ -11,6 +11,7 @@ import org.bukkit.configuration.MemorySection;
 public class UHCMainConfig extends GeneralConfig {
 
 	public Map<String, String> rulesets;
+	public boolean debug = false;
 	
 	public UHCMainConfig(UHCPlugin p, File file) {
 		super(p,file);
@@ -20,11 +21,13 @@ public class UHCMainConfig extends GeneralConfig {
 	protected MemorySection toConfig(MemorySection config) {
 		
 		config.set("rulesets", toMapList(rulesets));
+		config.set("debug", debug);
 		return config;
 	}
 
 	@Override
 	protected void fromConfig(MemorySection config) {
+		debug = config.getBoolean("debug", false);
 		rulesets = toStringMap(config.getMapList("rulesets"));
 	}
 

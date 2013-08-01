@@ -23,6 +23,9 @@ public class ForceBorderChangeCommand extends UHCCommandHandler {
 		if(pos.size()<1){
 			sender.sendMessage(ChatColor.RED+"Need size"); return;
 		}
+		if(!this.sender.hasPermission("uhc.admin")){
+			sender.sendMessage("Insufficient permissions.");
+		}
 		int size;
 		try{
 			size = Integer.valueOf(pos.get(0));
