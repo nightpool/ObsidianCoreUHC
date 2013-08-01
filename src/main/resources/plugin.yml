@@ -1,0 +1,36 @@
+
+name: ObsidianCoreUHC
+main: net.nightpool.bukkit.uhcplugin.UHCPlugin
+version: maven-version-number
+description: A plugin to simplify the management and administration of Ultimate Hardcore games.
+authors: [Nightpool, mathguy360]
+prefix: ObsidianCoreUHC
+commands:
+   uhc:
+      description: The main uhc command. Most management commands fall under here.
+      usage: /uhc
+permissions: 
+    uhc.admin: 
+        description: Administarte the UHC Games, Templates and Plugins. Implies uhc.run.
+    uhc.run: 
+        desctription: Start a UHC Game. A lower level permission, used to let players run their own games without giving them potentially unfair permissions.
+    
+# Features:
+#   Boundaries
+#   Pre-generated and loaded chunks
+#   Game timer
+#   Spectators w/ own chat
+#   Despawn mobs (?)
+#   Heal and feed at the beginning.
+#   scatter and freeze players before the game starts. 
+#      - Scattering patterns:
+#        - Random
+#        - Random sections
+#        - Evenly in circle
+#   Crafting
+#   stop health regen
+#   Teams
+
+# Addons:
+#   Eternal Daytime
+#   Goal Chest

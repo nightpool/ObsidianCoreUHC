@@ -1,0 +1,23 @@
+
+timer-intervals: 1 # (min)
+spectators:
+    allowed: true
+    can-join: true
+    prefix: "[SPECTATOR]"
+approve-players: true
+
+#starting-boundaries: 2000
+#auto-bounds: 
+#    - .5: 1000
+#    - 2: 200
+#vote-bounds: true
+#use-gamerules: false # Use vanilla gamerules method of stopping health regen. Only works with 1.6
+
+# One of: random, random (radius), sections
+scatter: random
+
+rulesets:
+    - Default
+    - Teams
+    - EternalDaytime
+    - GoalChest

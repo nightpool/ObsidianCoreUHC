@@ -1,0 +1,9 @@
+
+#####################
+#   U  U  H H   CCC
+#   U  U  HHH  C
+#    UU   H H   CCC
+#####################
+
+rulesets:
+    - Default: net.nightpool.bukkit.uhcplugin.DefaultRules
