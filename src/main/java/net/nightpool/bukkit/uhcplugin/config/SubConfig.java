@@ -1,11 +1,11 @@
 package net.nightpool.bukkit.uhcplugin.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.nightpool.bukkit.nightutils.GeneralConfig;
-
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -96,7 +96,7 @@ public abstract class SubConfig{
 			strings.put(i.getKey(), config.getString(i.getKey(), i.getValue()));
 		}
 		for(Entry<String, Map<Double, Integer>> i : dubIntMapsDefaults.entrySet()){
-			config.addDefault(i.getKey(), i.getValue());
+			config.addDefault(i.getKey(), GeneralConfig.toMapList(i.getValue()));
 			dubIntMaps.put(i.getKey(), UHCTemplate.toDubIntMap(config.getMapList(i.getKey()), i.getKey()));
 		}
 	}
@@ -110,7 +110,8 @@ public abstract class SubConfig{
 		temp.putAll(doubles);
 		temp.putAll(strings);
 		for(Entry<String, Map<Double, Integer>> i : dubIntMaps.entrySet()){
-			temp.put(i.getKey(), GeneralConfig.toMapList(i.getValue()));
+			ArrayList<Map<Double, Integer>> mapList = GeneralConfig.toMapList(i.getValue());
+			temp.put(i.getKey(), mapList);
 		}
 		for(Entry<String, Object> i : temp.entrySet()){
 			config.set(i.getKey(), i.getValue());
