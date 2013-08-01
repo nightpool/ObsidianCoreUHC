@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.nightpool.bukkit</groupId>
 	<artifactId>ObsidianCoreUHC</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5-dev</version>
 	<name>Obsidian Core UHC</name>
 	<description>A plugin to facilitate running UHC games.</description>
 	<repositories>
