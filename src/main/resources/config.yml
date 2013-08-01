@@ -6,4 +6,5 @@
 #####################
 
 rulesets:
-    - Default: net.nightpool.bukkit.uhcplugin.DefaultRules
+    - Default: net.nightpool.bukkit.uhcplugin.game.DefaultRules
+    - Spectators: net.nightpool.bukkit.uhcplugin.game.SpectatorRules
