@@ -1,10 +1,11 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import net.nightpool.bukkit.nightutils.CommandHandler;
 import net.nightpool.bukkit.nightutils.NCommand;
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 public abstract class UHCCommandHandler extends CommandHandler {
 	protected UHCPlugin p;

@@ -1,6 +1,6 @@
 package net.nightpool.bukkit.uhcplugin.events;
 
-import net.nightpool.bukkit.uhcplugin.UHCGame;
+import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;

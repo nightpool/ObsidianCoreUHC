@@ -1,10 +1,11 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.config.UHCTemplate;
 import net.nightpool.bukkit.uhcplugin.events.UHCGameOverEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerAddEvent;

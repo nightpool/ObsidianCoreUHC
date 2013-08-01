@@ -1,10 +1,11 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.config.SubConfig;
 
 public abstract class UHCRuleset {

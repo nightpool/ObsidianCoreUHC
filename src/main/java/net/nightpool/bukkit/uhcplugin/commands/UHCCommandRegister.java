@@ -1,6 +1,7 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.commands;
 
 import net.nightpool.bukkit.nightutils.CommandRegister;
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.commands.*;
 
 public class UHCCommandRegister extends CommandRegister {

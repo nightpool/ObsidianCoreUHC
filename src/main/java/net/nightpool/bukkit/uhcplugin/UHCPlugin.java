@@ -18,8 +18,11 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import net.nightpool.bukkit.nightutils.CommandPlugin;
+import net.nightpool.bukkit.uhcplugin.commands.UHCCommandRegister;
 import net.nightpool.bukkit.uhcplugin.config.UHCMainConfig;
 import net.nightpool.bukkit.uhcplugin.config.UHCTemplate;
+import net.nightpool.bukkit.uhcplugin.game.UHCGame;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset;
 
 public class UHCPlugin extends CommandPlugin{
 	
@@ -28,8 +31,9 @@ public class UHCPlugin extends CommandPlugin{
 	}
 
 	public static final boolean debug = true;
+	public static final String log_prefix = "["+"ObsidianCoreUHC"+"] ";
 	public static final String fancyName = "§5§lO§r§5bsidian§lC§r§5oreUHC";
-	public static final String chat_prefix = ChatColor.DARK_PURPLE+"["+"ObsidianCoreUHC"+"] "+ChatColor.LIGHT_PURPLE;
+	public static final String chat_prefix = ChatColor.DARK_PURPLE+log_prefix+ChatColor.LIGHT_PURPLE;
 	public Logger log;	
 	private UHCGame game;
 	

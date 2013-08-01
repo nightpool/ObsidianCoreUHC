@@ -1,4 +1,4 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.config.SubConfig;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerLoseEvent;
 

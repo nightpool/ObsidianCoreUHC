@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 
 import net.nightpool.bukkit.nightutils.NCommand;
 import net.nightpool.bukkit.nightutils.Registerable;
-import net.nightpool.bukkit.uhcplugin.UHCCommandHandler;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 @Registerable(name="add", aliases = {"a"}, description="Add a player to the current UHC game.", usage="")

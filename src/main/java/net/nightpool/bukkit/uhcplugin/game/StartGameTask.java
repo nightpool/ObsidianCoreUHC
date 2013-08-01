@@ -1,4 +1,4 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 public class StartGameTask implements Runnable {
 

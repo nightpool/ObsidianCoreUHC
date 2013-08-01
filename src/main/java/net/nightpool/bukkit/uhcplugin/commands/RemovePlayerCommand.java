@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import net.nightpool.bukkit.nightutils.NCommand;
 import net.nightpool.bukkit.nightutils.Registerable;
-import net.nightpool.bukkit.uhcplugin.UHCCommandHandler;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 

@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 
 import net.nightpool.bukkit.nightutils.NCommand;
 import net.nightpool.bukkit.nightutils.Registerable;
-import net.nightpool.bukkit.uhcplugin.UHCCommandHandler;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 @Registerable(name="stop", aliases = {}, description="Stop the current UHCGame.", usage="")

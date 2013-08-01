@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import net.nightpool.bukkit.nightutils.GeneralConfig;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
-import net.nightpool.bukkit.uhcplugin.UHCRuleset;
-import net.nightpool.bukkit.uhcplugin.UHCRuleset.RulesetConfig;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset.RulesetConfig;
 
 public class UHCTemplate extends GeneralConfig{
 	
@@ -100,7 +101,6 @@ public class UHCTemplate extends GeneralConfig{
 		Map<Double, Integer> map = new HashMap<Double, Integer>();
 		for (Map<?, ?> m : mapList){
 			if(m.size() > 1){
-//				p.logError("Bad configuration. Check your "+mapname+" config.", new Exception());
 				return map;
 			}
 			Object db = m.keySet().toArray()[0];
@@ -108,20 +108,20 @@ public class UHCTemplate extends GeneralConfig{
 			Double d;
 			Integer i;
 			if (db instanceof Double){
-//				p.getLogger().info("Double: "+((Double)db).toString());
+//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Double: "+((Double)db).toString());
 				d = (Double)db;
 			} else if (db instanceof Integer){
-//				p.getLogger().info("Integer: "+((Integer)db).toString());
+//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Integer: "+((Integer)db).toString());
 				d = ((Integer) db).doubleValue();
 			} else{
-//				p.getLogger().warning("Error parsing key in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
+//				Bukkit.getLogger().warning(UHCPlugin.log_prefix+"Error parsing key in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
 				continue;
 			}
 			if (ib instanceof Integer){
-//				p.getLogger().info("Integer: "+((Integer)ib).toString());
+//				Bukkit.getLogger().info(UHCPlugin.log_prefix+"Integer: "+((Integer)ib).toString());
 				i = ((Integer) ib);
 			}else{
-//				p.getLogger().warning("Error parsing value in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
+//				Bukkit.getLogger().warning(UHCPlugin.log_prefix+"Error parsing value in "+db.toString()+": "+ib.toString()+" in "+mapname+" map. Skipping");
 				continue;
 			}
 			map.put(d, i);

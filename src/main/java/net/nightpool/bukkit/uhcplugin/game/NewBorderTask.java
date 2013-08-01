@@ -1,11 +1,11 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.nightpool.bukkit.uhcplugin.UHCRuleset.RulesetConfig;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset.RulesetConfig;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

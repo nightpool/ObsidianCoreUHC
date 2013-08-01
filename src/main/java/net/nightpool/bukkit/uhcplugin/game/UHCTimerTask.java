@@ -1,6 +1,8 @@
-package net.nightpool.bukkit.uhcplugin;
+package net.nightpool.bukkit.uhcplugin.game;
 
 import java.util.Date;
+
+import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 public class UHCTimerTask implements Runnable {
 

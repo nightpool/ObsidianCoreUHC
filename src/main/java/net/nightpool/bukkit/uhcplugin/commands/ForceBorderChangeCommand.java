@@ -5,12 +5,11 @@ import org.bukkit.ChatColor;
 
 import net.nightpool.bukkit.nightutils.NCommand;
 import net.nightpool.bukkit.nightutils.Registerable;
-import net.nightpool.bukkit.uhcplugin.DefaultRules;
-import net.nightpool.bukkit.uhcplugin.NewBorderTask;
-import net.nightpool.bukkit.uhcplugin.UHCCommandHandler;
-import net.nightpool.bukkit.uhcplugin.UHCGame;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
-import net.nightpool.bukkit.uhcplugin.UHCRuleset;
+import net.nightpool.bukkit.uhcplugin.game.DefaultRules;
+import net.nightpool.bukkit.uhcplugin.game.NewBorderTask;
+import net.nightpool.bukkit.uhcplugin.game.UHCGame;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset;
 
 @Registerable(name="forceborder", aliases = {}, description="Force a change in border", usage="new-radius")
 public class ForceBorderChangeCommand extends UHCCommandHandler {

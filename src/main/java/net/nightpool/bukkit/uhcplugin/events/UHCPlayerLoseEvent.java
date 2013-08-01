@@ -2,7 +2,7 @@ package net.nightpool.bukkit.uhcplugin.events;
 
 import java.util.List;
 
-import net.nightpool.bukkit.uhcplugin.UHCGame;
+import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
