@@ -1,5 +1,5 @@
 
-timer-intervals: 1 # (min)
+timer-intervals: 10 # (min)
 spectators:
     allowed: true
     can-join: true
@@ -19,6 +19,6 @@ scatter: random
 rulesets:
     - Default
     - Spectators
-    - Teams
-    - EternalDaytime
-    - GoalChest
+#    - Teams
+#    - EternalDaytime
+#    - GoalChest

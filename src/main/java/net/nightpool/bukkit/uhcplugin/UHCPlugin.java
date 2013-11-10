@@ -73,12 +73,8 @@ public class UHCPlugin extends CommandPlugin{
 		File template_folder = new File(folder, "templates/");
 		if(!template_folder.exists()){
 			template_folder.mkdir();
-			File outFile = new File(template_folder, "default.yml");
-			this.templates = new HashMap<String, UHCTemplate>();
-			templates.put("default", new UHCTemplate(this, outFile, "template.yml", "default"));
-		}else{
-			reload_templates();
 		}
+		reload_templates();
 	}
 
 	private void load_rulesets() {
@@ -130,6 +126,10 @@ public class UHCPlugin extends CommandPlugin{
 		for(File i : template_folder.listFiles()){
 			String name = i.getName().split("\\.")[0];
 			templates.put(name, new UHCTemplate(this, i, "template.yml", name));
+		}
+		if(!templates.containsKey("default")){
+			File outFile = new File(template_folder, "default.yml");
+			templates.put("default", new UHCTemplate(this, outFile, "template.yml", "default"));
 		}
 		return this.templates;
 	}

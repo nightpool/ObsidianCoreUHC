@@ -29,6 +29,10 @@ public class RemovePlayerCommand extends UHCCommandHandler {
 				return;
 			}
 		}
-		p.getGame().removePlayer(pl, flags.contains("-s"));
+		if(!UHCPlugin.debug && flags.contains("-n")){
+			flags.remove("-n");
+		}
+		p.getGame().removePlayer(pl, flags.contains("-s"), flags.contains("-n"));
+		sender.sendMessage(ChatColor.GREEN+"Player removed successfully.");
 	}
 }

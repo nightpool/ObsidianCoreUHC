@@ -17,6 +17,7 @@ public class UHCCommandRegister extends CommandRegister {
 		this.register(StopGameCommand.class);
 		this.register(RemovePlayerCommand.class);
 		this.register(AddPlayerCommand.class);
+		this.register(ListCommand.class);
 		
 		if(UHCPlugin.debug){
 			this.register(ForceBorderChangeCommand.class);

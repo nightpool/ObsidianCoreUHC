@@ -19,11 +19,17 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<artifactId>bukkit</artifactId>
-			<groupId>org.bukkit</groupId>
-			<version>1.6.2-R0.1-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <artifactId>bukkit</artifactId>
+            <groupId>org.bukkit</groupId>
+            <version>1.6.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- <dependency>
+            <artifactId>craftbukkit</artifactId>
+            <groupId>org.bukkit</groupId>
+            <version>1.6.2-R0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency> -->
         <dependency>
             <groupId>com.wimbli.WorldBorder</groupId>
             <artifactId>WorldBorder</artifactId>
@@ -38,35 +44,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.wimbli.WorldBorder:WorldBorder</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.wimbli.WorldBorder</pattern>
-                                    <shadedPattern>com.wimbli.WorldBorder.nightpool</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
                 <version>2.0</version>
                 <executions>
-                    <execution>
+                <!-- WorldBorder -->
+                <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
@@ -75,6 +56,13 @@
                             <shadedArtifactAttached>false</shadedArtifactAttached>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
+                                <relocation>
+                                    <pattern>com.wimbli.WorldBorder</pattern>
+                                    <shadedPattern>com.wimbli.WorldBorder.uhcplugin</shadedPattern>
+                                </relocation>
+                                
+                                
+                                <!-- CraftBukkit compat       
                                 <relocation>
                                     <pattern>org.bukkit.craftbukkit</pattern>
                                     <shadedPattern>org.bukkit.craftbukkit.${project.mcversion}</shadedPattern>
@@ -88,18 +76,22 @@
                                     <excludes>
                                         <exclude>net.minecraft.server.${project.mcversion}.**.*</exclude>
                                     </excludes>
-                                </relocation>
+                                </relocation>-->
                             </relocations>
                             <artifactSet>
+                                <includes>
+                                    <include>com.wimbli.WorldBorder:WorldBorder</include>
+                                </includes>
                                 <excludes>
+                                    <exclude>org.bukkit:bukkit</exclude>
                                     <exclude>org.bukkit:craftbukkit</exclude>
                                     <exclude>junit:junit</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
-                    </execution>
+                    </execution>    
                 </executions>
-            </plugin> -->
+            </plugin>
 
             <plugin>
                 <groupId>com.google.code.maven-replacer-plugin</groupId>
@@ -129,8 +121,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -28,7 +28,7 @@ public abstract class GeneralConfig {
 		if(!file.exists()){
 			try{
 				file.createNewFile();
-				p.getLogger().warning("Config not found. loading "+template+" from jar");
+				p.getLogger().warning("RulesetConfig not found. loading "+template+" from jar");
 				config=YamlConfiguration.loadConfiguration(p.getResource(template));
 			} catch (IOException e){
 				p.logError("Could not read default config.",e);

@@ -9,7 +9,6 @@ import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.game.DefaultRules;
 import net.nightpool.bukkit.uhcplugin.game.NewBorderTask;
 import net.nightpool.bukkit.uhcplugin.game.UHCGame;
-import net.nightpool.bukkit.uhcplugin.game.UHCRuleset;
 
 @Registerable(name="forceborder", aliases = {}, description="Force a change in border", usage="new-radius")
 public class ForceBorderChangeCommand extends UHCCommandHandler {
@@ -34,11 +33,7 @@ public class ForceBorderChangeCommand extends UHCCommandHandler {
 		}
 		DefaultRules d = null;
 		UHCGame game = p.getGame();
-		for(UHCRuleset i : game.rulesets){
-			if(i instanceof DefaultRules){
-				d = (DefaultRules) i;
-			}
-		}
+		d = (DefaultRules) game.rulesets.get(DefaultRules.class);
 		if(d == null){
 			sender.sendMessage(ChatColor.RED+"Couldn't find DefaultRules. Are you sure you're running a game with ruleset Default?"); return;
 		}

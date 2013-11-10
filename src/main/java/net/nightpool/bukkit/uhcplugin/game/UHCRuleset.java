@@ -13,8 +13,8 @@ public abstract class UHCRuleset {
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface RulesetConfig {
-		Class<? extends SubConfig> subConfigClass();
-		String configKey();
+		Class<? extends SubConfig> config();
+		String key();
 	}
 	
 	public UHCPlugin p;
@@ -25,11 +25,11 @@ public abstract class UHCRuleset {
 		this.p = p;
 	}
 	public abstract void onStart();
-	public abstract void onUnLoad();
+	public abstract void onUnload();
 	
 	public SubConfig getConfig(){
 		if(this.getClass().isAnnotationPresent(RulesetConfig.class)){
-			String key = this.getClass().getAnnotation(RulesetConfig.class).configKey();
+			String key = this.getClass().getAnnotation(RulesetConfig.class).key();
 			return game.template.getSubConfig(key);
 		} else{
 			return null;

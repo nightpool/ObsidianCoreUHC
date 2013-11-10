@@ -16,9 +16,9 @@ public abstract class UHCCommandHandler extends CommandHandler {
 	}
 	
 
-	protected boolean checkGame(boolean suppress_message) {
+	protected boolean checkGame(boolean silent) {
 		if (!p.gameRunning()){
-			if(!suppress_message){
+			if(!silent){
 				sender.sendMessage(ChatColor.RED+"This command only makes sense if a game is already running!");
 			}
 			return false;
@@ -26,15 +26,15 @@ public abstract class UHCCommandHandler extends CommandHandler {
 		return true;
 	}
 	
-	protected boolean checkCanAdminAndGame(boolean suppress_message){
-		if(!checkGame(suppress_message)){return false;}
-		boolean canAdmin = this.sender.hasPermission("uhc.admin") || 
+	protected boolean checkCanAdminAndGame(boolean silent){
+		if(!checkGame(silent)){return false;}
+		boolean can_admin = this.sender.hasPermission("uhc.admin") || 
 				this.sender.equals(Bukkit.getConsoleSender()) || 
 				this.sender.equals(p.getGame().runner);
-		if (canAdmin){
+		if (can_admin){
 			return true;
 		}else{
-			if(!suppress_message){
+			if(!silent){
 				sender.sendMessage(ChatColor.RED+"You need to be able to administrate the current game to preform this command.");
 			}
 			return false;

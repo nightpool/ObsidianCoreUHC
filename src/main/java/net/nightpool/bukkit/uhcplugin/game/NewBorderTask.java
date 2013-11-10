@@ -36,7 +36,7 @@ public class NewBorderTask implements Runnable {
 		this.newBorder = border.copy();
 		newBorder.setRadius(newRadius);
 		this.game = game;
-		this.borderTime = game.template.getSubConfig(DefaultRules.class.getAnnotation(RulesetConfig.class).configKey()).getInt("border-time");
+		this.borderTime = game.template.getSubConfig(DefaultRules.class.getAnnotation(RulesetConfig.class).key()).getInt("border-time");
 	}
 
 	@Override

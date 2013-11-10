@@ -29,6 +29,9 @@ public class StartGameCommand extends UHCCommandHandler {
 				p.broadcast("New game loaded! (Template: "+t.name+")");
 			}
 		}
+		if(p.getGame().running || p.getGame().started){
+			sender.sendMessage(ChatColor.RED+"There's already a game running!"); return;
+		}
 		int delay;
 		if(pos.size()<1){
 			delay = 20;
@@ -36,7 +39,7 @@ public class StartGameCommand extends UHCCommandHandler {
 			try{
 				delay = Integer.valueOf(pos.get(0));
 			} catch (NumberFormatException e){
-				delay = 20;
+				delay = 20; // TODO: add to template config.
 			}
 		}
 		sender.sendMessage(ChatColor.GREEN+"Game started sucessfully!");

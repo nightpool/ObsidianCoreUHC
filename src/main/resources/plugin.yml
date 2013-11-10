@@ -11,9 +11,9 @@ commands:
       usage: /uhc
 permissions: 
     uhc.admin: 
-        description: Administarte the UHC Games, Templates and Plugins. Implies uhc.run.
+        description: Administrate the UHC Games, Templates and Plugins. Implies uhc.run.
     uhc.run: 
-        desctription: Start a UHC Game. A lower level permission, used to let players run their own games without giving them potentially unfair permissions.
+        description: Start a UHC Game. A lower level permission, used to let players run their own games without giving them admin permissions.
     
 # Features:
 #   Boundaries

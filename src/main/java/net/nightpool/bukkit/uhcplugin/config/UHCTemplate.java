@@ -81,14 +81,14 @@ public class UHCTemplate extends GeneralConfig{
 			Class<RulesetConfig> a_class = UHCRuleset.RulesetConfig.class;
 			if (r.isAnnotationPresent(a_class)){
 				RulesetConfig a = r.getAnnotation(a_class);
-				if(!config.isConfigurationSection(a.configKey())){
-					config.createSection(a.configKey());
+				if(!config.isConfigurationSection(a.key())){
+					config.createSection(a.key());
 				}
 				
 				try {
-					SubConfig s = a.subConfigClass().getConstructor(ConfigurationSection.class)
-							.newInstance(config.getConfigurationSection(a.configKey()));
-					subconfigs.put(a.configKey(), s);
+					SubConfig s = a.config().getConstructor(ConfigurationSection.class)
+							.newInstance(config.getConfigurationSection(a.key()));
+					subconfigs.put(a.key(), s);
 				} catch (Exception e){
 					p.logError(e); continue;
 				}

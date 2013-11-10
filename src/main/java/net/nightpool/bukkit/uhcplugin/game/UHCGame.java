@@ -1,10 +1,8 @@
 package net.nightpool.bukkit.uhcplugin.game;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.config.UHCTemplate;
 import net.nightpool.bukkit.uhcplugin.events.UHCGameOverEvent;
@@ -12,6 +10,7 @@ import net.nightpool.bukkit.uhcplugin.events.UHCPlayerAddEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerLoseEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerRemoveEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPostGameEvent;
+import net.nightpool.bukkit.uhcplugin.utils.PlayerSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,36 +26,34 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class UHCGame implements Listener{
 
 	public boolean running = false;
+	public boolean started = false;
 	public int countdownTaskId = -1;
 	public int timerId = -1;
 	
 	protected UHCPlugin p;
-	public List<UHCRuleset> rulesets;
-	public Set<Class<? extends UHCRuleset>> rules;
-	protected UHCTemplate template;
+	public Map<Class<? extends UHCRuleset>, UHCRuleset> rulesets;
+	public UHCTemplate template;
 	public World world;
-	public List<OfflinePlayer> players;
+	public PlayerSet players;
 	public CommandSender runner;
 		
 	public UHCGame(UHCTemplate template, UHCPlugin p, World world, CommandSender runner){
 		this.p = p;
 		this.template = template;
 		this.world = world;
-		players = new ArrayList<OfflinePlayer>();
+		players = new PlayerSet();
 		if(!template.manualPlayers){
 			players.addAll(world.getPlayers());
 		}
+		p.log.info(""+players);
 		this.runner = runner;
-		this.rulesets = new ArrayList<UHCRuleset>();
-		this.rules = new HashSet<Class<? extends UHCRuleset>>();
+		this.rulesets = new HashMap<Class<? extends UHCRuleset>, UHCRuleset>();
 		Bukkit.getPluginManager().registerEvents(this, p);
 		
 		for(String i : template.rulesets){
-			if("Default".equalsIgnoreCase(i)){	// Just to make sure that at least the default rulesets always work, no matter what gets messed up.
-				if(!rules.contains(DefaultRules.class)){
-					DefaultRules d = new DefaultRules(this, p);
-					rulesets.add(d);
-					rules.add(DefaultRules.class);
+			if("Default".equalsIgnoreCase(i)){	// Just to make sure that at least the default ruleset always works, no matter what gets messed up.
+				if(!rulesets.keySet().contains(DefaultRules.class)){
+					rulesets.put(DefaultRules.class, new DefaultRules(this, p));
 				}
 			}else{
 				if(!p.rulesets.containsKey(i)){
@@ -65,12 +62,14 @@ public class UHCGame implements Listener{
 				}
 				try {
 					Class<? extends UHCRuleset> r = p.getRuleset(i);
-					if(r!=null && !rules.contains(r)){
+					if(r!=null && !rulesets.keySet().contains(r)){
 						UHCRuleset ruleset = r.getConstructor(UHCGame.class, UHCPlugin.class).newInstance(this, p);
-						rulesets.add(ruleset);
-						rules.add(r);
+						rulesets.put(r, ruleset);
 					}
-				} catch (Exception e) {
+				} catch (Throwable e) {
+					if(e instanceof InvocationTargetException){
+						e = ((InvocationTargetException)e).getCause();
+					}
 					p.logError("Error in ruleset instantiation.",e);
 				}
 			}
@@ -80,12 +79,14 @@ public class UHCGame implements Listener{
 	
 	public void startCountdown(int delay) {
 		p.broadcast("Countdown initiated! Game will start in "+String.valueOf(delay)+" seconds.");
-		countdownTaskId  = Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new StartGameTask(delay, this), 20, 20);		
+		countdownTaskId  = Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new StartGameTask(delay, this), 20, 20);
+		started = true;
 	}
 
 	public void stopCountdown() {
 		if(countdownTaskId != -1){
 			Bukkit.getScheduler().cancelTask(countdownTaskId);
+			countdownTaskId = -1;
 		}
 	}
 	
@@ -97,7 +98,7 @@ public class UHCGame implements Listener{
 	
 	public void startGame(){
 		running = true;
-		for(UHCRuleset i : rulesets){
+		for(UHCRuleset i : rulesets.values()){
 			i.onStart();
 		}
 		timerId = Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new UHCTimerTask(p, this), 600, 600);
@@ -115,35 +116,35 @@ public class UHCGame implements Listener{
 				p.broadcast(ev.getWinningPlayer().getDisplayName()+" has won!");
 				UHCPostGameEvent ev_pg = new UHCPostGameEvent(this, winningPlayer);
 				Bukkit.getPluginManager().callEvent(ev_pg);
-				for(UHCRuleset i : rulesets){
-					i.onUnLoad();
+				for(UHCRuleset i : rulesets.values()){
+					i.onUnload();
 				}
 				p.gameOver();return;
 			}
 		} else{
 			running = false;
 			p.broadcast("The UHC game has ended.");
-			for(UHCRuleset i : rulesets){
-				i.onUnLoad();
+			for(UHCRuleset i : rulesets.values()){
+				i.onUnload();
 			}
 			p.gameOver();return;
 		}
 	}
 	
 
-	public boolean removePlayer(OfflinePlayer player, boolean silent) {
+	public boolean removePlayer(OfflinePlayer player, boolean silent,
+			boolean checkGame) {
 		if (!players.contains(player)){return false;}
-		if (players.size() <= 1){return false;}
 		UHCPlayerRemoveEvent ev = new UHCPlayerRemoveEvent(this, player, silent);
 		Bukkit.getPluginManager().callEvent(ev);
 		if(!ev.isCancelled()){
 			OfflinePlayer opl = ev.getPlayer();
 			players.remove(opl);
 			Player pl = opl.getPlayer();
-			if((pl != null) && !ev.isSilent()){
+			if((opl.isOnline()) && !ev.isSilent()){
 				pl.sendMessage(ChatColor.GOLD+"You've been removed from the game");
 			}
-			
+			if(!checkGame){return true;}
 			int onlinePlayers = getOnlinePlayers();
 			if(onlinePlayers == 1){
 				endGame(lastOnlinePlayer());
@@ -152,7 +153,12 @@ public class UHCGame implements Listener{
 			}
 			return true;
 		}
-		return false;
+		return false;		
+	}
+	
+	
+	public boolean removePlayer(OfflinePlayer player, boolean silent) {
+		return removePlayer(player, silent, true);
 	}
 	
 	@EventHandler(priority=EventPriority.HIGH, ignoreCancelled=true)
@@ -204,5 +210,6 @@ public class UHCGame implements Listener{
 		return ev.getReason()!=null?ev.getReason():"";
 		
 	}
+
 	
 }

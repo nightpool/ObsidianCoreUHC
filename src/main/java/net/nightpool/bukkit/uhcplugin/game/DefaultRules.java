@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 import net.nightpool.bukkit.uhcplugin.config.SubConfig;
+import net.nightpool.bukkit.uhcplugin.game.UHCRuleset.RulesetConfig;
+import net.nightpool.bukkit.uhcplugin.events.UHCPlayerAddEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerLoseEvent;
 
 import org.bukkit.Bukkit;
@@ -39,7 +41,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.wimbli.WorldBorder.BorderData;
 
-@UHCRuleset.RulesetConfig(subConfigClass = DefaultRules.DefaultRulesConfig.class, configKey = "default")
+@RulesetConfig(config = DefaultRules.DefaultRulesConfig.class, key = "default")
 public class DefaultRules extends UHCRuleset implements Listener{
 
 	public BorderData currentBorder;
@@ -57,10 +59,11 @@ public class DefaultRules extends UHCRuleset implements Listener{
 	@Override
 	public void onStart(){
 		initPlayers();
+		game.world.setTime(0);
 	}
 	
 	@Override
-	public void onUnLoad(){
+	public void onUnload(){
 		HandlerList.unregisterAll(this);
 		undoBoundaries();
 		unregisterRecipes();
@@ -96,12 +99,7 @@ public class DefaultRules extends UHCRuleset implements Listener{
 
 	private void initPlayers() {
 		for(OfflinePlayer i : game.players){
-			Player pl = i.getPlayer();
-			if(pl==null){continue;}
-			pl.setHealth(pl.getMaxHealth());
-			pl.setFoodLevel(20);
-			pl.getInventory().clear();
-			pl.setGameMode(GameMode.SURVIVAL);
+			prep_player(i);
 		}
 		if(getConfig().getBool("use-gamerules") && game.world.isGameRule("naturalRegeneration")){
 			game.world.setGameRuleValue("naturalRegeneration", "false");
@@ -116,6 +114,25 @@ public class DefaultRules extends UHCRuleset implements Listener{
 		m.clearSlot(DisplaySlot.PLAYER_LIST);
 		Objective o = m.registerNewObjective("health", "health");
 		o.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+		for(OfflinePlayer i : game.players){
+			if(i.isOnline()){
+				o.getScore(i).setScore((int) Math.round((i.getPlayer().getMaxHealth()*2)));
+			}
+		}
+	}
+
+	private void prep_player(OfflinePlayer i) {
+		Player pl = i.getPlayer();
+		if(pl==null){return;}
+		pl.setHealth(pl.getMaxHealth());
+		pl.setFoodLevel(20);
+		pl.getInventory().clear();
+		pl.setGameMode(GameMode.SURVIVAL);
+	}
+	
+	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
+	public void playerAddEvent(UHCPlayerAddEvent e){
+		prep_player(e.getPlayer());
 	}
 
 	private void registerRecipes() {
