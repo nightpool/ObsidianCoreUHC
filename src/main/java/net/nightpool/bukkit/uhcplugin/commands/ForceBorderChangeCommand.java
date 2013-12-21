@@ -13,33 +13,33 @@ import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 @Registerable(name="forceborder", aliases = {}, description="Force a change in border", usage="new-radius")
 public class ForceBorderChangeCommand extends UHCCommandHandler {
 
-	public ForceBorderChangeCommand(NCommand com, UHCPlugin p) {
-		super(com, p);
-	}
+    public ForceBorderChangeCommand(NCommand com, UHCPlugin p) {
+        super(com, p);
+    }
 
-	@Override
-	public void call() throws Exception {
-		if(pos.size()<1){
-			sender.sendMessage(ChatColor.RED+"Need size"); return;
-		}
-		if(!this.sender.hasPermission("uhc.admin")){
-			sender.sendMessage("Insufficient permissions.");
-		}
-		int size;
-		try{
-			size = Integer.valueOf(pos.get(0));
-		} catch(NumberFormatException e){
-			sender.sendMessage(ChatColor.RED+pos.get(0)+" is not a valid int"); return;
-		}
-		DefaultRules d = null;
-		UHCGame game = p.getGame();
-		d = (DefaultRules) game.rulesets.get(DefaultRules.class);
-		if(d == null){
-			sender.sendMessage(ChatColor.RED+"Couldn't find DefaultRules. Are you sure you're running a game with ruleset Default?"); return;
-		}
-		
-		Bukkit.getScheduler().runTask(p, new NewBorderTask(size, d.currentBorder, game));
+    @Override
+    public void call() throws Exception {
+        if(pos.size()<1){
+            sender.sendMessage(ChatColor.RED+"Need size"); return;
+        }
+        if(!this.sender.hasPermission("uhc.admin")){
+            sender.sendMessage("Insufficient permissions.");
+        }
+        int size;
+        try{
+            size = Integer.valueOf(pos.get(0));
+        } catch(NumberFormatException e){
+            sender.sendMessage(ChatColor.RED+pos.get(0)+" is not a valid int"); return;
+        }
+        DefaultRules d = null;
+        UHCGame game = p.getGame();
+        d = (DefaultRules) game.rulesets.get(DefaultRules.class);
+        if(d == null){
+            sender.sendMessage(ChatColor.RED+"Couldn't find DefaultRules. Are you sure you're running a game with ruleset Default?"); return;
+        }
+        
+        Bukkit.getScheduler().runTask(p, new NewBorderTask(size, d.currentBorder, game));
 
-	}
+    }
 
 }

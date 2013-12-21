@@ -9,30 +9,30 @@ import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 
 
 @Registerable(name="remove", aliases = {"rm", "rem"}, description="Remove a player from the current UHC game." +
-		"\n-s makes it silent", usage="player [-s]")
+        "\n-s makes it silent", usage="player [-s]")
 public class RemovePlayerCommand extends UHCCommandHandler {
 
-	public RemovePlayerCommand(NCommand com, UHCPlugin p) {super(com, p);}
+    public RemovePlayerCommand(NCommand com, UHCPlugin p) {super(com, p);}
 
-	@Override
-	public void call() throws Exception {
-		if (!checkCanAdminAndGame()){return;}
-		if(this.pos.size() < 1){
-			sender.sendMessage(ChatColor.RED + "This command requires at least one argument, the name of a player to remove.");return;
-		} 
-		String name = pos.get(0);
-		OfflinePlayer pl = Bukkit.getPlayer(name);
-		if(pl == null){
-			pl = Bukkit.getOfflinePlayer(name);
-			if(!pl.hasPlayedBefore()){
-				sender.sendMessage(ChatColor.RED+"Player "+name+" not found.");
-				return;
-			}
-		}
-		if(!UHCPlugin.debug && flags.contains("-n")){
-			flags.remove("-n");
-		}
-		p.getGame().removePlayer(pl, flags.contains("-s"), flags.contains("-n"));
-		sender.sendMessage(ChatColor.GREEN+"Player removed successfully.");
-	}
+    @Override
+    public void call() throws Exception {
+        if (!checkCanAdminAndGame()){return;}
+        if(this.pos.size() < 1){
+            sender.sendMessage(ChatColor.RED + "This command requires at least one argument, the name of a player to remove.");return;
+        } 
+        String name = pos.get(0);
+        OfflinePlayer pl = Bukkit.getPlayer(name);
+        if(pl == null){
+            pl = Bukkit.getOfflinePlayer(name);
+            if(!pl.hasPlayedBefore()){
+                sender.sendMessage(ChatColor.RED+"Player "+name+" not found.");
+                return;
+            }
+        }
+        if(!UHCPlugin.debug && flags.contains("-n")){
+            flags.remove("-n");
+        }
+        p.getGame().removePlayer(pl, flags.contains("-s"), flags.contains("-n"));
+        sender.sendMessage(ChatColor.GREEN+"Player removed successfully.");
+    }
 }

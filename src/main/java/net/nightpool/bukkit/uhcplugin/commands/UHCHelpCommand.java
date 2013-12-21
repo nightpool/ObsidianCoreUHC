@@ -8,7 +8,7 @@ import net.nightpool.bukkit.uhcplugin.UHCPlugin;
 @Registerable(name="help", aliases = {"h"}, description="Gives help for a command")
 public class UHCHelpCommand extends HelpCommand {
 
-	public UHCHelpCommand(NCommand com, UHCPlugin p) {	
-		super(com, p);
-	}
+    public UHCHelpCommand(NCommand com, UHCPlugin p) {    
+        super(com, p);
+    }
 }

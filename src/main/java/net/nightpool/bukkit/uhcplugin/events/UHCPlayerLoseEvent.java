@@ -11,39 +11,39 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class UHCPlayerLoseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
-	protected boolean isCancelled;
-	private UHCGame game;
-	
-	public Player player;
+    protected boolean isCancelled;
+    private UHCGame game;
+    
+    public Player player;
     public PlayerDeathEvent deathEvent;
 
-	public UHCPlayerLoseEvent(UHCGame game, PlayerDeathEvent ev) {
-		this.deathEvent = ev;
-		this.player = ev.getEntity();
-		this.game = game;
-	}
+    public UHCPlayerLoseEvent(UHCGame game, PlayerDeathEvent ev) {
+        this.deathEvent = ev;
+        this.player = ev.getEntity();
+        this.game = game;
+    }
 
-	@Override
-	public boolean isCancelled() {
-		return this.isCancelled;
-	}
+    @Override
+    public boolean isCancelled() {
+        return this.isCancelled;
+    }
 
-	@Override
-	public void setCancelled(boolean cancel) {
-		this.isCancelled = cancel;
-	}
+    @Override
+    public void setCancelled(boolean cancel) {
+        this.isCancelled = cancel;
+    }
 
-	public UHCGame getGame() {
-		return game;
-	}
-	
+    public UHCGame getGame() {
+        return game;
+    }
+    
 
-	@Override
-	public HandlerList getHandlers() {
-		return handlers;
-	}
-	
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+    
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

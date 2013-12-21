@@ -17,13 +17,13 @@ public class Cuboid {
     }
     
     public Cuboid(int xMin, int xMax, int yMin, int yMax, int zMin,int zMax, World world){
-    	this.xMin = xMin;
-    	this.xMax = xMax;
-    	this.yMin = yMin;
-    	this.yMax = yMax;
-    	this.zMin = zMin;
-    	this.zMax = zMax;
-    	this.world = world;
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.yMin = yMin;
+        this.yMax = yMax;
+        this.zMin = zMin;
+        this.zMax = zMax;
+        this.world = world;
     }
 
     public int xMin, xMax, yMin, yMax, zMin, zMax;
@@ -41,49 +41,49 @@ public class Cuboid {
     }
     
     public String serialize(){
-    	return ""+xMin+","+zMin+","+yMin+":"+xMax+","+zMax+","+yMax+"@"+world.getName();
+        return ""+xMin+","+zMin+","+yMin+":"+xMax+","+zMax+","+yMax+"@"+world.getName();
     }
     
     @Override
-	public String toString(){
-    	return serialize();
+    public String toString(){
+        return serialize();
     }
     
     public static Cuboid deserialize(JavaPlugin p, String s){
-    	if(s == null){
-    		return null;
-    	}
-    	String s1=s.split("@")[0];
-    	World world;
-    	
-    	try{
-    		world = p.getServer().getWorld(s.split("@")[1]);
-    	}catch (ArrayIndexOutOfBoundsException e){
-    		world=p.getServer().getWorlds().get(0);
-    	}
-    	String s2=s1.split(":")[0];
+        if(s == null){
+            return null;
+        }
+        String s1=s.split("@")[0];
+        World world;
+        
+        try{
+            world = p.getServer().getWorld(s.split("@")[1]);
+        }catch (ArrayIndexOutOfBoundsException e){
+            world=p.getServer().getWorlds().get(0);
+        }
+        String s2=s1.split(":")[0];
 
         int xMin, xMax, yMin, yMax, zMin, zMax;
-    	String[] sR = s2.split(",");
-    	
-    	xMin = new Integer(sR[0]);
-    	yMin = new Integer(sR[1]);
-    	zMin = new Integer(sR[2]);
-    	
-    	if(s1.contains(":")){
-    		String s3 = s1.split(":")[1];
+        String[] sR = s2.split(",");
+        
+        xMin = new Integer(sR[0]);
+        yMin = new Integer(sR[1]);
+        zMin = new Integer(sR[2]);
+        
+        if(s1.contains(":")){
+            String s3 = s1.split(":")[1];
 
-        	String[] sR1 = s3.split(",");
-        	
-        	xMax = new Integer(sR1[0]);
-        	yMax = new Integer(sR1[1]);
-        	zMax = new Integer(sR1[2]);
-    	} else{
-        	xMax = xMin;
-        	yMax = yMin;
-        	zMax = zMin;
-    	}
-    	return new Cuboid(xMin,  xMax,  yMin,  yMax,  zMin, zMax, world);
+            String[] sR1 = s3.split(",");
+            
+            xMax = new Integer(sR1[0]);
+            yMax = new Integer(sR1[1]);
+            zMax = new Integer(sR1[2]);
+        } else{
+            xMax = xMin;
+            yMax = yMin;
+            zMax = zMin;
+        }
+        return new Cuboid(xMin,  xMax,  yMin,  yMax,  zMin, zMax, world);
     }
     
     public int getXWidth() {

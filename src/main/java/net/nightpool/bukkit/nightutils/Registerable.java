@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Registerable {
-	public String name();
-	public String description();
-	public String usage() default "";
-	public String[] aliases() default {};
+    public String name();
+    public String description();
+    public String usage() default "";
+    public String[] aliases() default {};
 }
