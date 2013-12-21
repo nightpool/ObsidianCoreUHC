@@ -1,22 +1,25 @@
 package net.nightpool.bukkit.uhcplugin.events;
 
-import java.util.List;
-
 import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
-public class UHCPlayerLoseEvent extends PlayerDeathEvent implements Cancellable {
+public class UHCPlayerLoseEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
 	protected boolean isCancelled;
 	private UHCGame game;
+	
+	public Player player;
+    public PlayerDeathEvent deathEvent;
 
 	public UHCPlayerLoseEvent(UHCGame game, PlayerDeathEvent ev) {
-		super(ev.getEntity(), ev.getDrops(), ev.getDroppedExp(), ev.getNewExp(), ev.getNewTotalExp(), ev.getNewLevel(), ev.getDeathMessage());
+		this.deathEvent = ev;
+		this.player = ev.getEntity();
 		this.game = game;
 	}
 
@@ -28,18 +31,6 @@ public class UHCPlayerLoseEvent extends PlayerDeathEvent implements Cancellable 
 	@Override
 	public void setCancelled(boolean cancel) {
 		this.isCancelled = cancel;
-	}
-	
-	public void overwriteDeathEvent(PlayerDeathEvent ev){
-		ev.setDeathMessage(getDeathMessage());
-		ev.setDroppedExp(getDroppedExp());
-		ev.setKeepLevel(getKeepLevel());
-		ev.setNewExp(getNewExp());
-		ev.setNewLevel(getNewLevel());
-		ev.setNewTotalExp(getNewTotalExp());
-		List<ItemStack> d = ev.getDrops();
-		d.clear();
-		d.addAll(getDrops());
 	}
 
 	public UHCGame getGame() {

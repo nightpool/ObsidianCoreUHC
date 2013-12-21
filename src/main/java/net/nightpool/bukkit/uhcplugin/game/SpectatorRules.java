@@ -2,8 +2,11 @@ package net.nightpool.bukkit.uhcplugin.game;
 
 import java.util.HashSet;
 import java.util.Set;
-
+  
+import net.nightpool.bukkit.nightutils.NCommand;
+import net.nightpool.bukkit.nightutils.Registerable;
 import net.nightpool.bukkit.uhcplugin.UHCPlugin;
+import net.nightpool.bukkit.uhcplugin.commands.UHCCommandHandler;
 import net.nightpool.bukkit.uhcplugin.config.SubConfig;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerAddEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerLoseEvent;
@@ -24,7 +27,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 @UHCRuleset.RulesetConfig(config = SpectatorRules.SpectatorRulesConfig.class, key = "spectator")
 public class SpectatorRules extends UHCRuleset implements Listener {
@@ -36,12 +41,15 @@ public class SpectatorRules extends UHCRuleset implements Listener {
 	 * -dismount them from their vehicle-
 	 * -shooting- 
 	 * -hurting mobs-
-	 * chat
+	 * -chat-
     */
 	public SpectatorRules(UHCGame game, UHCPlugin p) {
 		super(game, p);
 		Bukkit.getPluginManager().registerEvents(this, p);
 		this.spectators = new HashSet<Player>();
+		if(!p.getCommandRegister().getAll().containsValue(SpectatorTeleportCommand.class)){
+		    p.getCommandRegister().register(SpectatorTeleportCommand.class);
+		}
 	}
 
 	@Override
@@ -62,10 +70,11 @@ public class SpectatorRules extends UHCRuleset implements Listener {
 		for(OfflinePlayer i : game.players){
 			if(i.isOnline()){
 				Player i_p = i.getPlayer();
-				for(Player j : spectators){
-					i_p.hidePlayer(j);
-				}
+				i_p.hidePlayer(spec);
 			}
+		}
+		for(Player i : spectators){
+		    spec.showPlayer(i);
 		}
 	}
 
@@ -119,7 +128,13 @@ public class SpectatorRules extends UHCRuleset implements Listener {
 	
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
 	public void playerLoseEvent(UHCPlayerLoseEvent e){
-		makeSpec(e.getEntity());
+	    final Player player = e.player;
+	    Bukkit.getScheduler().runTask(p, new Runnable(){
+	        @Override
+            public void run(){
+	            makeSpec(player);
+	        }
+	    });
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
@@ -177,6 +192,16 @@ public class SpectatorRules extends UHCRuleset implements Listener {
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+    public void handleDeathEvent(PlayerDeathEvent e){
+	    if(!game.running || !spectators.contains(e.getEntity())){
+	        return;
+	    }
+	    e.setDeathMessage("");
+	    e.setDroppedExp(0);
+	    e.getDrops().clear();
+	}
+	
+	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
 	public void handlePlayerEvent(PlayerBedEnterEvent e){onPlayerEvent(e);}
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
 	public void handlePlayerEvent(PlayerBucketFillEvent e){onPlayerEvent(e);}
@@ -217,5 +242,33 @@ public class SpectatorRules extends UHCRuleset implements Listener {
 			addString("chat-prefix", ChatColor.GOLD+"[SPECTATOR]");
 			fromConfig(fromSection);
 		}
+	}
+	
+
+	@Registerable(name="teleport", aliases = {"tp"}, description="Allows spectators to teleport around to different players", usage="player")
+	public static class SpectatorTeleportCommand extends UHCCommandHandler{
+
+        public SpectatorTeleportCommand(NCommand com, UHCPlugin p) {
+            super(com, p);
+        }
+
+        @Override
+        public void call() throws Exception {
+            if (!(sender instanceof Player)){
+                sender.sendMessage(ChatColor.RED+"This command can only be used by players!"); return;
+            }
+            if(!p.gameRunning() )
+            if(pos.size() < 1){
+                sender.sendMessage(ChatColor.RED+"You need to specify a player!"); return;
+            }
+            String name = pos.get(0);
+            Player player = Bukkit.getPlayer(name);
+            if(player == null){
+                sender.sendMessage(ChatColor.RED+"Can't find player "+name); return;
+            }
+            sender.sendMessage(ChatColor.GREEN+"Teleporting to "+name);
+            ((Player) sender).teleport(player, TeleportCause.COMMAND);
+        }
+	    
 	}
 }

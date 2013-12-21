@@ -14,6 +14,7 @@ import net.nightpool.bukkit.uhcplugin.utils.PlayerSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -22,6 +23,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class UHCGame implements Listener{
 
@@ -123,6 +126,7 @@ public class UHCGame implements Listener{
 			}
 		} else{
 			running = false;
+            Bukkit.getScheduler().cancelTask(timerId);
 			p.broadcast("The UHC game has ended.");
 			for(UHCRuleset i : rulesets.values()){
 				i.onUnload();
@@ -153,7 +157,7 @@ public class UHCGame implements Listener{
 			}
 			return true;
 		}
-		return false;		
+		return false;
 	}
 	
 	
@@ -166,19 +170,28 @@ public class UHCGame implements Listener{
 		if(!running){return;}
 		Player pl = evp.getEntity();
 		if(!players.contains(pl)){return;}
-		UHCPlayerLoseEvent ev = new UHCPlayerLoseEvent(this, evp); 
+		UHCPlayerLoseEvent ev = new UHCPlayerLoseEvent(this, evp);
+		ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+		SkullMeta sm = ((SkullMeta) skull.getItemMeta()).clone();
+		sm.setOwner(pl.getName());
+		skull.setItemMeta(sm);
+		ev.deathEvent.getDrops().add(skull);
 		Bukkit.getPluginManager().callEvent(ev);
 		if(!ev.isCancelled()){
-			players.remove(ev.getEntity());
+			players.remove(ev.player);
 		}
-		ev.overwriteDeathEvent(evp);
-		
-		int onlinePlayers = getOnlinePlayers();
-		if(onlinePlayers == 1){
-			endGame(lastOnlinePlayer());
-		} else if(onlinePlayers < 1){
-			endGame(null);
-		}
+		Bukkit.getScheduler().runTask(p, new Runnable(){
+            @Override
+            public void run() {
+                int onlinePlayers = getOnlinePlayers();
+                if(onlinePlayers == 1){
+                    endGame(lastOnlinePlayer());
+                } else if(onlinePlayers < 1){
+                    endGame(null);
+                }
+            }
+		    
+		});
 	}
 
 	private Player lastOnlinePlayer() {

@@ -14,7 +14,7 @@
 	</repositories>
 
 	<properties>
-		<project.mcversion>v1_6_R2</project.mcversion>
+		<project.mcversion>v1_6_R3</project.mcversion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -22,12 +22,12 @@
         <dependency>
             <artifactId>bukkit</artifactId>
             <groupId>org.bukkit</groupId>
-            <version>1.6.2-R0.1-SNAPSHOT</version>
+            <version>1.6.4-R2.0</version>
         </dependency>
         <!-- <dependency>
             <artifactId>craftbukkit</artifactId>
             <groupId>org.bukkit</groupId>
-            <version>1.6.2-R0.1-SNAPSHOT</version>
+            <version>1.6.4-R2.0</version>
             <scope>compile</scope>
         </dependency> -->
         <dependency>

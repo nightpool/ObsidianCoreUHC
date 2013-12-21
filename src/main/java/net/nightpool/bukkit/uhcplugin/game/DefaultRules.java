@@ -127,11 +127,13 @@ public class DefaultRules extends UHCRuleset implements Listener{
 		pl.setHealth(pl.getMaxHealth());
 		pl.setFoodLevel(20);
 		pl.getInventory().clear();
+		pl.getInventory().setArmorContents(null);
 		pl.setGameMode(GameMode.SURVIVAL);
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled = true)
 	public void playerAddEvent(UHCPlayerAddEvent e){
+	    if(!game.running){return;}
 		prep_player(e.getPlayer());
 	}
 
@@ -200,7 +202,7 @@ public class DefaultRules extends UHCRuleset implements Listener{
 	@EventHandler(ignoreCancelled=true)
 	public void handlePlayerLose(UHCPlayerLoseEvent ev){
 		int n_players = game.players.size()-1;
-		if(playerBorders.containsKey(n_players)){
+		if(n_players > 1 && playerBorders.containsKey(n_players)){
 			Bukkit.getScheduler().runTask(p, new NewBorderTask(playerBorders.get(n_players), currentBorder, game));
 		}
 	}
@@ -249,7 +251,8 @@ public class DefaultRules extends UHCRuleset implements Listener{
 		}
 		
 	}
-	public static class DummyEnchantedAppleRecipe extends ShapedRecipe{
+	@SuppressWarnings("deprecation")
+    public static class DummyEnchantedAppleRecipe extends ShapedRecipe{
 		public static ItemStack ENCHANTED_APPLE = new ItemStack(Material.GOLDEN_APPLE);
 		static{
 			ENCHANTED_APPLE.setData(new MaterialData(Material.GOLDEN_APPLE, (byte) 1));

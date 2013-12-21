@@ -41,16 +41,13 @@ public class UHCTemplate extends GeneralConfig{
 	@Override
 	protected MemorySection toConfig(MemorySection config) {
 		config.set("timer-intervals", timerIntervals);
-
-		config.set("spectators.allowed", specAllowed);
-		config.set("spectators.can-join", specCanJoin);
-		config.set("spectators.prefix", specPrefix);
 		
 		config.set("manual-players", manualPlayers);
 		
 		config.set("scatter", scatter);
 		
 		config.set("rulesets", rulesets);
+		
 		for(Map.Entry<String, SubConfig> i : subconfigs.entrySet()){
 			ConfigurationSection s = config.createSection(i.getKey());
 			i.getValue().toConfig(s);
@@ -62,11 +59,7 @@ public class UHCTemplate extends GeneralConfig{
 	protected void fromConfig(MemorySection config) {
 		timerIntervals = config.getInt("timer-intervals");
 
-		specAllowed = config.getBoolean("spectators.allowed");
-		specCanJoin = config.getBoolean("spectators.can-join");
-		specPrefix = config.getString("spectators.prefix");
-		
-		manualPlayers = config.getBoolean("approve-players");
+		manualPlayers = config.getBoolean("manual-players");
 		
 		scatter = config.getString("scatter");
 		
@@ -86,8 +79,14 @@ public class UHCTemplate extends GeneralConfig{
 				}
 				
 				try {
-					SubConfig s = a.config().getConstructor(ConfigurationSection.class)
-							.newInstance(config.getConfigurationSection(a.key()));
+				    SubConfig s;
+				    if (a.config().getDeclaringClass() != null){
+				        s = a.config().getConstructor(r.getClass(), ConfigurationSection.class)
+				                .newInstance(r, config.getConfigurationSection(a.key()));
+				    } else{
+	                    s = a.config().getConstructor(ConfigurationSection.class)
+	                            .newInstance(config.getConfigurationSection(a.key()));   
+				    }
 					subconfigs.put(a.key(), s);
 				} catch (Exception e){
 					p.logError(e); continue;
