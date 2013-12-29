@@ -12,40 +12,40 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 @SerializableAs("UHCPlayerSet")
-public class PlayerSet extends AbstractSet<OfflinePlayer> implements Set<OfflinePlayer>, ConfigurationSerializable {
+public class OfflinePlayerSet extends AbstractSet<OfflinePlayer> implements Set<OfflinePlayer>, ConfigurationSerializable {
 
-    private HashMap<String, OfflinePlayer> map;
+    private HashMap<String, Boolean> map;
     
-    public PlayerSet(){
-        map = new HashMap<String, OfflinePlayer>();
+    public OfflinePlayerSet(){
+        map = new HashMap<String, Boolean>();
     }
     
-    public PlayerSet(Collection<OfflinePlayer> c){
+    public OfflinePlayerSet(Collection<OfflinePlayer> c){
         map = new HashMap<>(Math.max((int) (c.size()/.75f) + 1, 16));
         addAll(c);
     }
     
-    public PlayerSet(int initialCapacity, float loadFactor) {
+    public OfflinePlayerSet(int initialCapacity, float loadFactor) {
         map = new HashMap<>(initialCapacity, loadFactor);
     }
 
-    public PlayerSet(int initialCapacity) {
+    public OfflinePlayerSet(int initialCapacity) {
         map = new HashMap<>(initialCapacity);
     }
     @Override
     public Iterator<OfflinePlayer> iterator() {
-        return map.values().iterator();
+        return new PlayerIterator(map.keySet().iterator());
     }
     
     @Override
     public boolean add(OfflinePlayer pl){
         if(contains(pl)){return false;}
-        map.put(pl.getName().toLowerCase(), pl);
+        map.put(pl.getName().toLowerCase(), true);
         return true;
     }
     
     public boolean remove(OfflinePlayer o) {
-        return map.remove(o.getName().toLowerCase()) == o;
+        return map.remove(o.getName().toLowerCase()) == true;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class PlayerSet extends AbstractSet<OfflinePlayer> implements Set<Offline
         if(o instanceof OfflinePlayer){
             return map.containsKey(((OfflinePlayer) o).getName().toLowerCase());
         }else{
-            return map.containsValue(o);
+            return map.containsKey(o);
         }
     }
     
