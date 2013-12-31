@@ -8,3 +8,6 @@
 rulesets:
     - Default: net.nightpool.bukkit.uhcplugin.game.DefaultRules
     - Spectators: net.nightpool.bukkit.uhcplugin.game.SpectatorRules
+    - Scatter: net.nightpool.bukkit.uhcplugin.game.ScatterRules
+    - Teams: net.nightpool.bukkit.uhcplugin.game.TeamRules
+    - EternalDaytime: net.nightpool.bukkit.uhcplugin.game.EternalDaytime

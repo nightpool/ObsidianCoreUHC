@@ -1,12 +1,11 @@
 
 timer-intervals: 10 # (min)
-manual-players: true
-
-scatter: random
+manual-players: false
 
 rulesets:
     - Default
     - Spectators
-#    - Teams
+    - Scatter
+    - Teams
 #    - EternalDaytime
 #    - GoalChest
