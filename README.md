@@ -8,7 +8,10 @@ This is a Bukkit plugin that allows server owners to run last man standing survi
 Most of the solutions for playing UHC are currently either proprietary, secret sauce plugins, or not extensible enough. My plugin allows for runtime loading of Ruleset modules, making it possible to create a secondary ecosystem where people using this plugin can easily write and distribute custom rules as simple java .class or .jar files. (This is also a prime target for monetization: keep the base plugin free as in freedom and sell premium rulesets that provide new features)
 
 
-##TODO
+## Building
+Currently building this plugin requires a custom version of WorldBorder. See upstream PR https://github.com/Brettflan/WorldBorder/pull/19 To download the custom code see https://github.com/nightpool/WorldBorder.
+
+## Todo
  - Team support is incomplete. Picking logic needs debugging.
  - Scatter rule needs to support teams, right now it scatters players individually. 
  - Specators can push entities, such as monsters. This is a bug.
