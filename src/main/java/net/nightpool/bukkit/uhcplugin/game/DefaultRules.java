@@ -45,6 +45,7 @@ import com.wimbli.WorldBorder.BorderData;
 public class DefaultRules extends UHCRuleset implements Listener{
 
     public BorderData currentBorder;
+    public Location center;
     private Map<Integer, Integer> playerBorders;
     private List<Recipe> oldRecipes;
     
@@ -70,8 +71,8 @@ public class DefaultRules extends UHCRuleset implements Listener{
     }
 
     private void createBoundaries() {
-        Location spawn = game.world.getSpawnLocation();
-        BorderData border = new BorderData(spawn.getX(), spawn.getZ(), getConfig().getInt("starting-boundaries"), getConfig().getInt("starting-boundaries"), false, false);
+        center = game.world.getSpawnLocation();
+        BorderData border = new BorderData(center.getX(), center.getZ(), getConfig().getInt("starting-boundaries"), getConfig().getInt("starting-boundaries"), false, false);
         com.wimbli.WorldBorder.PluginlessConfig.setKnockBack(.5);
         com.wimbli.WorldBorder.PluginlessConfig.setBorder(game.world.getName(), border);
         com.wimbli.WorldBorder.PluginlessConfig.setMessage("You seem to have wandered outside of the boundaries!");
@@ -237,6 +238,7 @@ public class DefaultRules extends UHCRuleset implements Listener{
             addBool("vote-bounds", true);
             addBool("disable-enchanted-apple", false);
             addDubIntMap("auto-bounds", default_autobounds_map);
+            addString("center", "spawn"); // TODO implement this
             fromConfig(fromSection);
         }
     }
@@ -251,7 +253,6 @@ public class DefaultRules extends UHCRuleset implements Listener{
         }
         
     }
-    @SuppressWarnings("deprecation")
     public static class DummyEnchantedAppleRecipe extends ShapedRecipe{
         public static ItemStack ENCHANTED_APPLE = new ItemStack(Material.GOLDEN_APPLE);
         static{

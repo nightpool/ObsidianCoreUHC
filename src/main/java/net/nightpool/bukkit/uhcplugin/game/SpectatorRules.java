@@ -37,11 +37,9 @@ public class SpectatorRules extends UHCRuleset implements Listener {
     public Set<Player> spectators;
     /* 
      * TODO things that don't work
-     * -picking up items-
-     * -dismount them from their vehicle-
-     * -shooting- 
-     * -hurting mobs-
-     * -chat-
+     * chat commands (/say, /me)
+     * pushing entities
+     * 
     */
     public SpectatorRules(UHCGame game, UHCPlugin p) {
         super(game, p);
@@ -163,12 +161,12 @@ public class SpectatorRules extends UHCRuleset implements Listener {
         if(ev instanceof Cancellable){
             ((Cancellable)ev).setCancelled(true);
         } else {
-            p.log.info("Bad event "+ev.getEventName()+" for "+ev.getPlayer()+" but couldn't cancel.");
+            p.getLog().info("Bad event "+ev.getEventName()+" for "+ev.getPlayer()+" but couldn't cancel.");
         }
     }
     
     void logPlayerEvent(PlayerEvent ev){
-        p.log.info("Canceled "+ev.getEventName()+" for "+ev.getPlayer());
+        p.getLog().info("Canceled "+ev.getEventName()+" for "+ev.getPlayer());
     }
     
     public void onEntityEvent(EntityEvent ev, Entity e){
@@ -177,7 +175,7 @@ public class SpectatorRules extends UHCRuleset implements Listener {
         if(ev instanceof Cancellable){
             ((Cancellable)ev).setCancelled(true);
         } else {
-            p.log.info("Bad event "+ev.getEventName()+" for "+e+" but couldn't cancel.");
+            p.getLog().info("Bad event "+ev.getEventName()+" for "+e+" but couldn't cancel.");
         }
     }
     

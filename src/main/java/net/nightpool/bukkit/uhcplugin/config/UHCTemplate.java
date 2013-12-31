@@ -14,14 +14,9 @@ import net.nightpool.bukkit.uhcplugin.game.UHCRuleset.RulesetConfig;
 
 public class UHCTemplate extends GeneralConfig{
     
-    public int timerIntervals;    
-    public boolean specAllowed;
-    public boolean specCanJoin;    
-    public String specPrefix;    
+    public int timerIntervals;
     
     public boolean manualPlayers;
-
-    public String scatter;
     
     public List<String> rulesets;
     public String name;
@@ -44,8 +39,6 @@ public class UHCTemplate extends GeneralConfig{
         
         config.set("manual-players", manualPlayers);
         
-        config.set("scatter", scatter);
-        
         config.set("rulesets", rulesets);
         
         for(Map.Entry<String, SubConfig> i : subconfigs.entrySet()){
@@ -61,15 +54,13 @@ public class UHCTemplate extends GeneralConfig{
 
         manualPlayers = config.getBoolean("manual-players");
         
-        scatter = config.getString("scatter");
-        
         rulesets = config.getStringList("rulesets");
         
         subconfigs = new HashMap<String, SubConfig>();
         for(String i : rulesets){
             Class<? extends UHCRuleset> r = p.getRuleset(i);
             if(r==null){
-                p.log.warning("Invalid ruleset "+i+". Skipping");continue;
+                p.getLog().warning("Invalid ruleset "+i+". Skipping");continue;
             }
             Class<RulesetConfig> a_class = UHCRuleset.RulesetConfig.class;
             if (r.isAnnotationPresent(a_class)){
@@ -80,13 +71,13 @@ public class UHCTemplate extends GeneralConfig{
                 
                 try {
                     SubConfig s;
-                    if (a.config().getDeclaringClass() != null){
-                        s = a.config().getConstructor(r.getClass(), ConfigurationSection.class)
-                                .newInstance(r, config.getConfigurationSection(a.key()));
-                    } else{
-                        s = a.config().getConstructor(ConfigurationSection.class)
-                                .newInstance(config.getConfigurationSection(a.key()));   
-                    }
+//                    if (a.config().getDeclaringClass() != null){
+//                        s = a.config().getConstructor(r.getClass(), ConfigurationSection.class)
+//                                .newInstance(r, config.getConfigurationSection(a.key()));
+//                    } else{
+//                    }
+                    s = a.config().getConstructor(ConfigurationSection.class)
+                            .newInstance(config.getConfigurationSection(a.key()));   
                     subconfigs.put(a.key(), s);
                 } catch (Exception e){
                     p.logError(e); continue;

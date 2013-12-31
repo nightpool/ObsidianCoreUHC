@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +22,7 @@ import net.nightpool.bukkit.uhcplugin.config.UHCMainConfig;
 import net.nightpool.bukkit.uhcplugin.config.UHCTemplate;
 import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 import net.nightpool.bukkit.uhcplugin.game.UHCRuleset;
+import net.nightpool.bukkit.uhcplugin.utils.ColorPluginLogger;
 
 public class UHCPlugin extends CommandPlugin{
     
@@ -34,7 +34,6 @@ public class UHCPlugin extends CommandPlugin{
     public static final String logPrefix = "["+"ObsidianCoreUHC"+"] ";
     public static final String fancyName = "§5§lO§r§5bsidian§lC§r§5oreUHC"+ChatColor.LIGHT_PURPLE;
     public static final String chatPrefix = ChatColor.DARK_PURPLE+logPrefix+ChatColor.LIGHT_PURPLE;
-    public Logger log;    
     private UHCGame game;
     
     UHCMainConfig config;
@@ -52,8 +51,7 @@ public class UHCPlugin extends CommandPlugin{
     @Override
     public void onEnable() {
         pdf = getDescription();
-        log = getLogger();
-        
+        log = new ColorPluginLogger(this);
         game = null;
         commandRegister = new UHCCommandRegister(this);
         getCommand("uhc").setExecutor(commandRegister);
@@ -96,7 +94,7 @@ public class UHCPlugin extends CommandPlugin{
         for(int i = 0; i<ruleset_files.length; i++){
             try {
                 jar_urls[i] = ruleset_files[i].toURI().toURL();
-            } catch (MalformedURLException e) {log.severe("Yeah nope. Your filesystem's WAY to screwy for my hotness.");return;}
+            } catch (MalformedURLException e) {getLog().severe("Yeah nope. Your filesystem's WAY to screwy for my hotness.");return;}
         }
         URLClassLoader ruleset_loader = new URLClassLoader(jar_urls, this.getClassLoader());
         for(String key : config.rulesets.keySet()){
@@ -105,12 +103,12 @@ public class UHCPlugin extends CommandPlugin{
                 Class<?> r = ruleset_loader.loadClass(x);
                 rulesets.put(key, r.asSubclass(UHCRuleset.class));
                 if(debug){
-                    log.info("Adding ruleset "+key+" with class "+x);
+                    getLog().info("Adding ruleset "+key+" with class "+x);
                 }
             } catch (ClassNotFoundException e) {
-                log.warning("Class "+x+" for ruleset "+key+" not found. Skipping.");
+                getLog().warning("Class "+x+" for ruleset "+key+" not found. Skipping.");
             } catch (ClassCastException e){
-                log.warning("Class "+x+" for ruleset "+key+" does not descend from UHCRuleset. Skipping.");
+                getLog().warning("Class "+x+" for ruleset "+key+" does not descend from UHCRuleset. Skipping.");
             }
         }
         try {
@@ -161,13 +159,13 @@ public class UHCPlugin extends CommandPlugin{
 
     @Override
     public void onDisable() {
-        log.info("Saving global config...");
+        getLog().info("Saving global config...");
         config.save();
         for(Entry<String, UHCTemplate> i : templates.entrySet()){
-            log.info("Saving config for "+i.getKey()+" template");
+            getLog().info("Saving config for "+i.getKey()+" template");
             i.getValue().save();
         }
-        log.info("Disabled version " + pdf.getVersion());
+        getLog().info("Disabled version " + pdf.getVersion());
     }
 
     public Class<? extends UHCRuleset> getRuleset(String i) {
