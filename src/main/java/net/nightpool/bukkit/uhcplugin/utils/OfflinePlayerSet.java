@@ -37,6 +37,10 @@ public class OfflinePlayerSet extends AbstractSet<OfflinePlayer> implements Set<
         return new PlayerIterator(map.keySet().iterator());
     }
     
+    public Iterator<String> name_iterator(){
+        return map.keySet().iterator();
+    }
+    
     @Override
     public boolean add(OfflinePlayer pl){
         if(contains(pl)){return false;}
