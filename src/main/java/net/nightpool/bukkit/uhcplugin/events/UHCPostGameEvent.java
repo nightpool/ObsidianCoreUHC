@@ -2,18 +2,17 @@ package net.nightpool.bukkit.uhcplugin.events;
 
 import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class UHCPostGameEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private UHCGame game;
-    private Player winningPlayer;
+    private String winString;
 
-    public UHCPostGameEvent(UHCGame uhcGame, Player winningPlayer) {
+    public UHCPostGameEvent(UHCGame uhcGame, String winString) {
         this.game = uhcGame;
-        this.winningPlayer = winningPlayer;
+        this.winString = winString;
     }
 
     @Override
@@ -25,12 +24,12 @@ public class UHCPostGameEvent extends Event {
         return game;
     }
 
-    public Player getWinningPlayer() {
-        return winningPlayer;
+    public String getWinningPlayer() {
+        return winString;
     }
 
-    public void setWinningPlayer(Player winningPlayer) {
-        this.winningPlayer = winningPlayer;
+    public void setWinningPlayer(String winString) {
+        this.winString = winString;
     }
 
 }

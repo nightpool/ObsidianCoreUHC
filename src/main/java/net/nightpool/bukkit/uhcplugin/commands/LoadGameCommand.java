@@ -49,8 +49,11 @@ public class LoadGameCommand extends UHCCommandHandler {
             }
         }
         p.loadGame(t, sender, world);
-        sender.sendMessage(ChatColor.GREEN+"Game loaded successfully!");
-        p.broadcast("New game loaded! (Template: "+t.name+")");
+        if(p.getGame().canStart()){
+            sender.sendMessage(ChatColor.GREEN+"Game loaded successfully!");
+        }
+        p.broadcast("New game loaded! (Template: "+t.name+")" +
+                (p.getGame().canStart()? ChatColor.GREEN+" Ready to play!" : ChatColor.YELLOW+" Setup in progress"));
     }
 
 }

@@ -16,7 +16,7 @@ public class StopGameCommand extends UHCCommandHandler {
         if(!checkCanAdminAndGame()){
             return;
         }
-        p.getGame().endGame(null);
+        p.getGame().endGame((String)null);
         sender.sendMessage(ChatColor.GREEN+"Game stopped sucessfully!");
     }
 

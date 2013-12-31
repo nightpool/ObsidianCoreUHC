@@ -2,7 +2,6 @@ package net.nightpool.bukkit.uhcplugin.events;
 
 import net.nightpool.bukkit.uhcplugin.game.UHCGame;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 
 
@@ -12,12 +11,12 @@ public class UHCGameOverEvent extends Event implements Cancellable{
 
     private boolean isCancelled = false;
     private UHCGame game;
-    private Player winningPlayer;
+    private String winString;
     
 
-    public UHCGameOverEvent(UHCGame uhcGame, Player winningPlayer) {
+    public UHCGameOverEvent(UHCGame uhcGame, String winString) {
         this.game = uhcGame;
-        this.winningPlayer = winningPlayer;
+        this.winString = winString;
     }
 
     @Override
@@ -47,12 +46,12 @@ public class UHCGameOverEvent extends Event implements Cancellable{
         this.game = game;
     }
 
-    public Player getWinningPlayer() {
-        return winningPlayer;
+    public String getWinString() {
+        return winString;
     }
 
-    public void setWinningPlayer(Player winningPlayer) {
-        this.winningPlayer = winningPlayer;
+    public void setWinningPlayer(String winString) {
+        this.winString = winString;
     }
 
 }

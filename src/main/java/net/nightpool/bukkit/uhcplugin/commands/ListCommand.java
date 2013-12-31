@@ -23,7 +23,7 @@ public class ListCommand extends UHCCommandHandler {
         sender.sendMessage(ChatColor.GREEN+"Players: ");
         UHCGame game = p.getGame();
         for(OfflinePlayer i : game.players){
-            p.log.info(i+"");
+            p.getLog().info(i+"");
             if(i.isOnline()){
                 sender.sendMessage(ChatColor.AQUA+"  "+i.getPlayer().getDisplayName());
             } else{

@@ -10,7 +10,7 @@ import net.nightpool.bukkit.uhcplugin.events.UHCPlayerAddEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerLoseEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPlayerRemoveEvent;
 import net.nightpool.bukkit.uhcplugin.events.UHCPostGameEvent;
-import net.nightpool.bukkit.uhcplugin.utils.PlayerSet;
+import net.nightpool.bukkit.uhcplugin.utils.OfflinePlayerSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +30,7 @@ public class UHCGame implements Listener{
 
     public boolean running = false;
     public boolean started = false;
+    public int canStart = 0;
     public int countdownTaskId = -1;
     public int timerId = -1;
     
@@ -37,22 +38,20 @@ public class UHCGame implements Listener{
     public Map<Class<? extends UHCRuleset>, UHCRuleset> rulesets;
     public UHCTemplate template;
     public World world;
-    public PlayerSet players;
+    public OfflinePlayerSet players;
     public CommandSender runner;
-        
+    
     public UHCGame(UHCTemplate template, UHCPlugin p, World world, CommandSender runner){
         this.p = p;
         this.template = template;
         this.world = world;
-        players = new PlayerSet();
+        players = new OfflinePlayerSet();
         if(!template.manualPlayers){
             players.addAll(world.getPlayers());
         }
-        p.log.info(""+players);
         this.runner = runner;
         this.rulesets = new HashMap<Class<? extends UHCRuleset>, UHCRuleset>();
         Bukkit.getPluginManager().registerEvents(this, p);
-        
         for(String i : template.rulesets){
             if("Default".equalsIgnoreCase(i)){    // Just to make sure that at least the default ruleset always works, no matter what gets messed up.
                 if(!rulesets.keySet().contains(DefaultRules.class)){
@@ -60,7 +59,7 @@ public class UHCGame implements Listener{
                 }
             }else{
                 if(!p.rulesets.containsKey(i)){
-                    p.log.warning("Can't find ruleset "+i+" in "+template.name+" config. Skipping.");
+                    p.getLog().warning("Can't find ruleset "+i+" in "+template.name+" config. Skipping.");
                     continue;
                 }
                 try {
@@ -77,13 +76,20 @@ public class UHCGame implements Listener{
                 }
             }
         }
-        
     }
     
-    public void startCountdown(int delay) {
+    public boolean canStart(){
+        return canStart == 0;
+    }
+    
+    public boolean startCountdown(int delay) {
+        if(!canStart()){
+            return false;
+        }
         p.broadcast("Countdown initiated! Game will start in "+String.valueOf(delay)+" seconds.");
         countdownTaskId  = Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new StartGameTask(delay, this), 20, 20);
         started = true;
+        return true;
     }
 
     public void stopCountdown() {
@@ -99,25 +105,37 @@ public class UHCGame implements Listener{
         }
     }
     
-    public void startGame(){
+    public boolean startGame(){
+        if(!canStart()){
+            return false;
+        }
         running = true;
         for(UHCRuleset i : rulesets.values()){
             i.onStart();
         }
         timerId = Bukkit.getScheduler().scheduleSyncRepeatingTask(p, new UHCTimerTask(p, this), 600, 600);
+        return true;
     }
     
     public void endGame(Player winningPlayer){
+        if(winningPlayer!=null){
+            endGame(winningPlayer.getDisplayName()+" has won!");
+        }else{
+            endGame((String)null);
+        }
+    }
+    
+    public void endGame(String winString){
         stopTimer();
         stopCountdown();
-        if(winningPlayer != null){
-            UHCGameOverEvent ev = new UHCGameOverEvent(this, winningPlayer);
+        if(winString != null){
+            UHCGameOverEvent ev = new UHCGameOverEvent(this, winString);
             Bukkit.getPluginManager().callEvent(ev);
             if(!ev.isCancelled()){
                 running = false;
                 Bukkit.getScheduler().cancelTask(timerId);
-                p.broadcast(ev.getWinningPlayer().getDisplayName()+" has won!");
-                UHCPostGameEvent ev_pg = new UHCPostGameEvent(this, winningPlayer);
+                p.broadcast(ev.getWinString());
+                UHCPostGameEvent ev_pg = new UHCPostGameEvent(this, winString);
                 Bukkit.getPluginManager().callEvent(ev_pg);
                 for(UHCRuleset i : rulesets.values()){
                     i.onUnload();
@@ -153,7 +171,7 @@ public class UHCGame implements Listener{
             if(onlinePlayers == 1){
                 endGame(lastOnlinePlayer());
             } else if(onlinePlayers < 1){
-                endGame(null);
+                endGame((String)null);
             }
             return true;
         }
@@ -187,7 +205,7 @@ public class UHCGame implements Listener{
                 if(onlinePlayers == 1){
                     endGame(lastOnlinePlayer());
                 } else if(onlinePlayers < 1){
-                    endGame(null);
+                    endGame((String)null);
                 }
             }
             

@@ -26,11 +26,18 @@ public class StartGameCommand extends UHCCommandHandler {
                 }
                 sender.sendMessage(ChatColor.YELLOW+"No game loaded. Loading one with \"default\" template on world \""+world.getName()+"\".");
                 p.loadGame(t, sender, world);
-                p.broadcast("New game loaded! (Template: "+t.name+")");
+                p.broadcast("New game loaded! (Template: "+t.name+") "+
+                        (p.getGame().canStart()? ChatColor.GREEN+"Ready to play!" : ChatColor.YELLOW+"Setup in progress"));
+                if(!p.getGame().canStart()){
+                    return;
+                }
             }
         }
         if(p.getGame().running || p.getGame().started){
             sender.sendMessage(ChatColor.RED+"There's already a game running!"); return;
+        }
+        if(!p.getGame().canStart()){
+            sender.sendMessage(ChatColor.RED+"The game isn't ready to start yet");
         }
         int delay;
         if(pos.size()<1){
@@ -42,8 +49,13 @@ public class StartGameCommand extends UHCCommandHandler {
                 delay = 20; // TODO: add to template config.
             }
         }
-        sender.sendMessage(ChatColor.GREEN+"Game started sucessfully!");
-        p.getGame().startCountdown(delay);
+        
+        boolean success = p.getGame().startCountdown(delay);
+        if(success){
+            sender.sendMessage(ChatColor.GREEN+"Game started sucessfully!");
+        } else{
+            sender.sendMessage(ChatColor.RED+"Game isn't ready to start yet");
+        }
     }    
 
 }

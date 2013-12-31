@@ -24,13 +24,8 @@ public class TemplatesCommand extends UHCCommandHandler {
             UHCTemplate t = p.getTemplates().get(this.pos.get(0));
             sender.sendMessage(ChatColor.GREEN + "Template " + t.name + " details:");
             sender.sendMessage(ChatColor.GREEN + "  timer-intervals:  " + ChatColor.DARK_RED + t.timerIntervals);
-            sender.sendMessage(ChatColor.GREEN + "  spectators.allowed:  " + ChatColor.AQUA + t.specAllowed);
-            sender.sendMessage(ChatColor.GREEN + "  spectators.can-join:  " + ChatColor.AQUA + t.specCanJoin);
-            sender.sendMessage(ChatColor.GREEN + "  spectators.prefix:  " + ChatColor.GRAY + t.specPrefix);
             
             sender.sendMessage(ChatColor.GREEN + "  approve-players:  " +ChatColor.AQUA + t.manualPlayers);
-            
-            sender.sendMessage(ChatColor.GREEN + "  scatter:  " + ChatColor.GRAY + t.scatter);
             
             sender.sendMessage(ChatColor.GREEN + "  rulesets:  "+ ChatColor.GRAY + NArrayUtils.toList(t.rulesets.toArray(new String[0])));
         }else{
